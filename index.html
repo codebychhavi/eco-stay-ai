@@ -1,0 +1,2152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#050b09">
+<title>ECO-STAY AI | TripGenix — Sustainability Intelligence</title>
+<meta name="description" content="TripGenix ECO-STAY AI: an interactive sustainability intelligence prototype for hotel energy efficiency.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
+:root {
+  --bg:#050b09;
+  --surface:#0a1511;
+  --surface2:#0d1c16;
+  --line:rgba(189,255,218,.12);
+  --white:#f0fff6;
+  --muted:#8fa99a;
+  --lime:#c6ff70;
+  --mint:#65f0b7;
+  --blue:#7ee7e4;
+  --red:#ffb78d;
+  --mono:'DM Mono',monospace;
+  --font:'Manrope',sans-serif
+}
+* {
+  box-sizing:border-box
+}
+html {
+  scroll-behavior:smooth;
+  scroll-padding-top:85px
+}
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--white);
+  font-family:var(--font);
+  overflow-x:hidden
+}
+body:after {
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:50;
+  pointer-events:none;
+  opacity:.045;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.4'/%3E%3C/svg%3E")
+}
+a {
+  color:inherit;
+  text-decoration:none
+}
+button {
+  font:inherit;
+  cursor:pointer
+}
+.shell {
+  width:min(1220px,calc(100% - 48px));
+  margin:auto
+}
+.mono {
+  font-family:var(--mono)
+}
+.muted {
+  color:var(--muted)
+}
+.topline {
+  height:29px;
+  background:#0d2117;
+  color:#c5f5d6;
+  font-size:10px;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  border-bottom:1px solid var(--line)
+}
+.live-dot {
+  width:6px;
+  height:6px;
+  background:var(--lime);
+  border-radius:50%;
+  box-shadow:0 0 13px var(--lime);
+  animation:blink 1.8s infinite
+}
+@keyframes blink {
+  50% {
+    opacity:.35
+  }
+}
+header {
+  position:sticky;
+  top:0;
+  z-index:40;
+  background:rgba(5,11,9,.82);
+  backdrop-filter:blur(22px);
+  border-bottom:1px solid rgba(189,255,218,.09)
+}
+.nav {
+  height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between
+}
+.brand {
+  display:flex;
+  align-items:center;
+  gap:11px;
+  font-weight:800;
+  letter-spacing:-.04em;
+  font-size:15px
+}
+.brand-icon {
+  width:35px;
+  height:35px;
+  border-radius:11px;
+  background:var(--lime);
+  display:grid;
+  place-items:center;
+  color:#07130b;
+  font-size:19px;
+  box-shadow:0 0 25px #c6ff7022
+}
+.brand small {
+  display:block;
+  font:9px var(--mono);
+  letter-spacing:.13em;
+  color:#7f9b8b;
+  margin-top:3px
+}
+.navlinks {
+  display:flex;
+  align-items:center;
+  gap:29px;
+  color:#a9c1b2;
+  font-size:12px
+}
+.navlinks a {
+  transition:color .2s
+}
+.navlinks a:hover {
+  color:var(--lime)
+}
+.navright {
+  display:flex;
+  align-items:center;
+  gap:14px
+}
+.status-pill {
+  font:10px var(--mono);
+  color:var(--mint);
+  border:1px solid #65f0b733;
+  padding:8px 10px;
+  border-radius:8px
+}
+.menu {
+  display:none;
+  background:transparent;
+  color:white;
+  border:1px solid var(--line);
+  padding:8px 10px;
+  border-radius:9px
+}
+.btn {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:11px;
+  padding:13px 17px;
+  border-radius:10px;
+  background:var(--lime);
+  color:#0a160d;
+  font-weight:800;
+  font-size:12px;
+  border:1px solid var(--lime);
+  transition:transform .2s,box-shadow .2s
+}
+.btn:hover {
+  transform:translateY(-2px);
+  box-shadow:0 8px 30px #c6ff7028
+}
+.btn.ghost {
+  background:transparent;
+  color:var(--white);
+  border-color:#d5ffe027
+}
+.btn .arr {
+  font-size:17px;
+  line-height:10px
+}
+.hero {
+  min-height:660px;
+  padding:86px 0 78px;
+  position:relative;
+  isolation:isolate
+}
+.hero:before {
+  content:"";
+  position:absolute;
+  z-index:-1;
+  top:-20%;
+  right:-10%;
+  width:65%;
+  height:105%;
+  background:radial-gradient(ellipse,#3b8d6226 0%,transparent 66%);
+  pointer-events:none
+}
+.hero-grid {
+  display:grid;
+  grid-template-columns:.95fr 1.05fr;
+  gap:56px;
+  align-items:center
+}
+.overline {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:var(--mint);
+  font:10px var(--mono);
+  letter-spacing:.14em;
+  text-transform:uppercase
+}
+.overline:before {
+  content:"";
+  width:25px;
+  height:1px;
+  background:var(--mint)
+}
+h1 {
+  font-size:clamp(52px,6.5vw,86px);
+  line-height:.96;
+  letter-spacing:-.078em;
+  margin:26px 0 24px;
+  font-weight:700
+}
+h1 .stroke {
+  color:transparent;
+  -webkit-text-stroke:1px #d7f6e1
+}
+h1 .lime {
+  color:var(--lime)
+}
+.hero-copy {
+  max-width:480px;
+  font-size:15px;
+  line-height:1.9;
+  color:#9db6a7
+}
+.hero-actions {
+  display:flex;
+  gap:11px;
+  flex-wrap:wrap;
+  margin:30px 0 31px
+}
+.hero-foot {
+  display:flex;
+  align-items:center;
+  gap:14px;
+  font-size:10px;
+  color:#829c8c
+}
+.avatars {
+  display:flex
+}
+.avatars i {
+  width:25px;
+  height:25px;
+  border:2px solid var(--bg);
+  margin-left:-6px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  font-style:normal;
+  font-size:10px;
+  background:#173a2b;
+  color:var(--mint)
+}
+.avatars i:first-child {
+  margin:0;
+  background:#34472a
+}
+.hero-foot strong {
+  color:#d9f8e5;
+  font-weight:600
+}
+.visual {
+  position:relative;
+  min-width:0
+}
+.orb {
+  position:absolute;
+  inset:12% 7%;
+  background:#4dff9a12;
+  filter:blur(50px);
+  border-radius:50%
+}
+.dashboard {
+  position:relative;
+  border:1px solid #c3ffe124;
+  border-radius:19px;
+  background:linear-gradient(145deg,#0d1e17f5,#07100cf7);
+  box-shadow:0 30px 100px #0009,0 0 70px #65f0b70a;
+  padding:19px;
+  transform:perspective(1200px) rotateY(-4deg) rotateX(2deg);
+  animation:dashfloat 7s ease-in-out infinite
+}
+@keyframes dashfloat {
+  50% {
+    transform:perspective(1200px) rotateY(-1deg) rotateX(0) translateY(-7px)
+  }
+}
+.db-head {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding-bottom:15px;
+  border-bottom:1px solid var(--line)
+}
+.db-name {
+  font-size:11px;
+  font-weight:700
+}
+.db-sub {
+  font:9px var(--mono);
+  color:#789688;
+  margin-top:5px
+}
+.db-live {
+  font:9px var(--mono);
+  color:var(--lime);
+  border:1px solid #c6ff7033;
+  border-radius:5px;
+  padding:6px 8px
+}
+.db-section {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:17px 0 10px;
+  font:9px var(--mono);
+  color:#7f9b8b;
+  letter-spacing:.08em;
+  text-transform:uppercase
+}
+.db-section span:last-child {
+  color:var(--mint)
+}
+.db-metrics {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px
+}
+.db-metric {
+  padding:12px 10px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#ffffff04;
+  min-width:0
+}
+.db-metric label {
+  font-size:9px;
+  color:#89a596;
+  display:block
+}
+.db-metric strong {
+  display:block;
+  font-size:21px;
+  letter-spacing:-.07em;
+  margin:8px 0 5px;
+  white-space:nowrap
+}
+.db-metric small {
+  font:9px var(--mono);
+  color:var(--lime)
+}
+.db-metric .unit {
+  font-size:9px;
+  color:#89a596;
+  letter-spacing:0
+}
+.chart-card {
+  margin-top:9px;
+  padding:13px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  background:#ffffff03
+}
+.chart-title {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  font-size:10px
+}
+.chart-title small {
+  font:9px var(--mono);
+  color:#88a494
+}
+.legend {
+  display:flex;
+  gap:12px;
+  margin-top:10px;
+  font:8px var(--mono);
+  color:#8ba698
+}
+.legend b {
+  display:inline-block;
+  width:6px;
+  height:6px;
+  border-radius:2px;
+  margin-right:5px;
+  background:var(--mint)
+}
+.legend span:nth-child(2) b {
+  background:#718d80
+}
+.svgchart {
+  width:100%;
+  height:110px;
+  display:block;
+  margin-top:6px;
+  overflow:visible
+}
+.linepath {
+  stroke-dasharray:650;
+  stroke-dashoffset:650;
+  animation:draw 2.3s .5s ease forwards
+}
+@keyframes draw {
+  to {
+    stroke-dashoffset:0
+  }
+}
+.floating {
+  position:absolute;
+  right:-24px;
+  top:16%;
+  background:#12281d;
+  border:1px solid #c6ff7040;
+  border-radius:12px;
+  padding:13px 15px;
+  box-shadow:0 15px 40px #0008;
+  animation:float 5s ease-in-out infinite
+}
+.floating small {
+  display:block;
+  font:9px var(--mono);
+  color:#9ab6a5
+}
+.floating strong {
+  display:block;
+  color:var(--lime);
+  font-size:19px;
+  margin-top:5px;
+  letter-spacing:-.05em
+}
+.float-bottom {
+  position:absolute;
+  left:-27px;
+  bottom:12%;
+  padding:12px 14px;
+  border:1px solid #65f0b72b;
+  border-radius:11px;
+  background:#0b1b13;
+  box-shadow:0 15px 40px #0008;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  animation:float 6s 1s ease-in-out infinite
+}
+.spark {
+  width:30px;
+  height:30px;
+  border-radius:9px;
+  background:#65f0b715;
+  color:var(--mint);
+  display:grid;
+  place-items:center
+}
+.float-bottom strong {
+  display:block;
+  font-size:10px
+}
+.float-bottom small {
+  display:block;
+  color:#8fa99a;
+  font-size:9px;
+  margin-top:4px
+}
+@keyframes float {
+  50% {
+    transform:translateY(-7px)
+  }
+}
+.ticker {
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  background:#08120d;
+  padding:20px 0
+}
+.ticker-in {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  flex-wrap:wrap
+}
+.ticker-label {
+  font:9px var(--mono);
+  letter-spacing:.14em;
+  color:#779385;
+  text-transform:uppercase
+}
+.ticker-item {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:11px;
+  color:#b7d1c0
+}
+.ticker-item i {
+  font-style:normal;
+  color:var(--lime);
+  font-size:17px
+}
+section {
+  padding:100px 0
+}
+.section-head {
+  max-width:700px
+}
+.section-head.center {
+  text-align:center;
+  margin:0 auto
+}
+.tag {
+  font:10px var(--mono);
+  color:var(--mint);
+  letter-spacing:.16em;
+  text-transform:uppercase
+}
+.heading {
+  font-size:clamp(34px,4.5vw,56px);
+  letter-spacing:-.065em;
+  line-height:1.06;
+  margin:17px 0
+}
+.heading .mutedline {
+  color:#6e8c7a
+}
+.intro {
+  font-size:14px;
+  line-height:1.9;
+  color:#91ab9b;
+  max-width:620px
+}
+.center .intro {
+  margin:0 auto
+}
+.challenge-grid {
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:55px;
+  align-items:start;
+  margin-top:45px
+}
+.challenge-big {
+  border:1px solid var(--line);
+  border-radius:17px;
+  padding:26px;
+  background:linear-gradient(135deg,#0e2017,#08110d);
+  min-height:260px;
+  position:relative;
+  overflow:hidden
+}
+.challenge-big:after {
+  content:"";
+  position:absolute;
+  width:200px;
+  height:200px;
+  right:-90px;
+  bottom:-100px;
+  border:1px solid #c6ff701e;
+  border-radius:50%;
+  box-shadow:0 0 0 25px #c6ff7005,0 0 0 50px #c6ff7004
+}
+.eyebrow-sm {
+  font:9px var(--mono);
+  color:var(--lime);
+  letter-spacing:.13em;
+  text-transform:uppercase
+}
+.challenge-big h3 {
+  font-size:25px;
+  letter-spacing:-.05em;
+  max-width:360px;
+  line-height:1.2;
+  margin:24px 0 13px
+}
+.challenge-big p {
+  font-size:12px;
+  line-height:1.8;
+  color:#93ad9d;
+  max-width:420px
+}
+.issue-list {
+  display:grid;
+  gap:0
+}
+.issue {
+  display:grid;
+  grid-template-columns:37px 1fr;
+  gap:13px;
+  padding:18px 0;
+  border-bottom:1px solid var(--line)
+}
+.issue:first-child {
+  padding-top:0
+}
+.issue-num {
+  font:10px var(--mono);
+  color:var(--mint);
+  padding-top:3px
+}
+.issue h4 {
+  font-size:13px;
+  margin:0 0 6px
+}
+.issue p {
+  font-size:11px;
+  line-height:1.7;
+  color:#8ca797;
+  margin:0
+}
+.solution {
+  background:linear-gradient(180deg,transparent,#0b1d142e 45%,transparent)
+}
+.solution-grid {
+  display:grid;
+  grid-template-columns:.86fr 1.14fr;
+  gap:65px;
+  align-items:center
+}
+.features {
+  display:grid;
+  gap:18px;
+  margin-top:27px
+}
+.feature {
+  display:grid;
+  grid-template-columns:34px 1fr;
+  gap:13px
+}
+.feature-icon {
+  width:33px;
+  height:33px;
+  border:1px solid #65f0b72b;
+  border-radius:9px;
+  display:grid;
+  place-items:center;
+  color:var(--mint);
+  font-size:14px
+}
+.feature h4 {
+  margin:0 0 5px;
+  font-size:12px
+}
+.feature p {
+  margin:0;
+  color:#8ca797;
+  font-size:11px;
+  line-height:1.7
+}
+.pipeline {
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:21px;
+  background:linear-gradient(135deg,#0b1912,#07100c);
+  position:relative
+}
+.pipeline-head {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+  font-size:11px
+}
+.pipeline-head span {
+  font:9px var(--mono);
+  color:#789688
+}
+.pipe-step {
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:15px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  background:#ffffff03;
+  transition:border-color .3s,transform .3s
+}
+.pipe-step:hover {
+  border-color:#65f0b766;
+  transform:translateX(4px)
+}
+.pipe-icon {
+  width:34px;
+  height:34px;
+  border-radius:9px;
+  background:#65f0b712;
+  color:var(--mint);
+  display:grid;
+  place-items:center;
+  flex-shrink:0
+}
+.pipe-step strong {
+  font-size:11px;
+  display:block
+}
+.pipe-step small {
+  font-size:10px;
+  color:#8ba596;
+  display:block;
+  margin-top:4px
+}
+.pipe-state {
+  margin-left:auto;
+  font:8px var(--mono);
+  color:var(--lime);
+  border:1px solid #c6ff7026;
+  padding:5px 6px;
+  border-radius:5px
+}
+.pipe-arrow {
+  text-align:center;
+  height:26px;
+  display:grid;
+  place-items:center;
+  color:var(--lime);
+  font-size:13px
+}
+.pipeline-foot {
+  font:9px var(--mono);
+  color:#759181;
+  margin-top:17px;
+  padding-top:14px;
+  border-top:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  gap:10px
+}
+.lab {
+  background:#07100c;
+  border-top:1px solid #ffffff07;
+  border-bottom:1px solid #ffffff07
+}
+.lab-head {
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  gap:20px;
+  flex-wrap:wrap
+}
+.lab-badge {
+  font:9px var(--mono);
+  border:1px solid #ffb78d38;
+  color:var(--red);
+  border-radius:7px;
+  padding:8px 10px
+}
+.workbench {
+  display:grid;
+  grid-template-columns:220px 1fr;
+  border:1px solid #c4ffdc20;
+  border-radius:17px;
+  overflow:hidden;
+  margin-top:36px;
+  background:#09140f;
+  box-shadow:0 35px 90px #0005
+}
+.sidepanel {
+  padding:20px 14px;
+  border-right:1px solid var(--line);
+  background:#0a1711
+}
+.side-title {
+  font:9px var(--mono);
+  color:#6f8e7b;
+  letter-spacing:.13em;
+  margin:2px 9px 17px
+}
+.property {
+  padding:12px 10px;
+  border-radius:9px;
+  background:#c6ff700b;
+  border:1px solid #c6ff7025;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  font-size:10px
+}
+.property-icon {
+  width:27px;
+  height:27px;
+  background:#c6ff7015;
+  color:var(--lime);
+  border-radius:7px;
+  display:grid;
+  place-items:center
+}
+.side-link {
+  font-size:10px;
+  color:#779385;
+  padding:12px 10px;
+  display:flex;
+  align-items:center;
+  gap:10px
+}
+.side-link.active {
+  color:var(--white)
+}
+.side-link.active:before {
+  content:"";
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:var(--lime)
+}
+.side-link:not(.active):before {
+  content:"";
+  width:5px;
+  height:5px;
+  border-radius:2px;
+  background:#385646
+}
+.side-bottom {
+  margin-top:45px;
+  border-top:1px solid var(--line);
+  padding:15px 9px;
+  color:#6d8979;
+  font:9px var(--mono);
+  line-height:1.8
+}
+.mainpanel {
+  padding:23px;
+  min-width:0
+}
+.worktop {
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  align-items:center;
+  flex-wrap:wrap
+}
+.worktop h3 {
+  margin:0;
+  font-size:15px;
+  letter-spacing:-.03em
+}
+.worktop p {
+  margin:5px 0 0;
+  font-size:10px;
+  color:#829d8c
+}
+.time-chip {
+  font:9px var(--mono);
+  color:#a6c1b0;
+  padding:8px 9px;
+  border:1px solid var(--line);
+  border-radius:7px
+}
+.scenario-row {
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  margin:21px 0
+}
+.scenario {
+  border:1px solid var(--line);
+  background:transparent;
+  color:#9ab3a3;
+  padding:9px 11px;
+  border-radius:7px;
+  font-size:10px;
+  transition:.2s
+}
+.scenario.active,.scenario:hover {
+  color:var(--lime);
+  background:#c6ff700b;
+  border-color:#c6ff7050
+}
+.stats {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:9px
+}
+.stat {
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:14px;
+  background:#ffffff02;
+  min-width:0
+}
+.stat-label {
+  font-size:9px;
+  color:#86a091;
+  display:flex;
+  justify-content:space-between;
+  gap:5px
+}
+.stat-label i {
+  font-style:normal;
+  color:var(--mint)
+}
+.stat strong {
+  display:block;
+  font-size:25px;
+  letter-spacing:-.07em;
+  margin:10px 0 5px;
+  white-space:nowrap
+}
+.stat small {
+  font:9px var(--mono);
+  color:var(--lime)
+}
+.lab-lower {
+  display:grid;
+  grid-template-columns:1.12fr .88fr;
+  gap:10px;
+  margin-top:10px
+}
+.panel {
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:15px;
+  min-width:0
+}
+.panel-top {
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center;
+  font-size:10px
+}
+.panel-top span {
+  font:8px var(--mono);
+  color:#789688
+}
+.energy-chart {
+  width:100%;
+  height:140px;
+  display:block;
+  margin-top:14px
+}
+.gridline {
+  stroke:#c4ffdc12;
+  stroke-width:1
+}
+.chart-labels {
+  display:flex;
+  justify-content:space-between;
+  color:#658272;
+  font:8px var(--mono);
+  margin-top:4px
+}
+.recommend-card {
+  border:1px solid #c6ff7030;
+  background:linear-gradient(140deg,#13261a,#0b1710);
+  border-radius:10px;
+  padding:15px;
+  display:flex;
+  flex-direction:column;
+  min-height:100%
+}
+.recommend-tag {
+  font:9px var(--mono);
+  letter-spacing:.12em;
+  color:var(--lime)
+}
+.recommend-card h4 {
+  font-size:14px;
+  line-height:1.4;
+  margin:13px 0 9px
+}
+.recommend-card p {
+  font-size:10px;
+  color:#8fa99a;
+  line-height:1.8;
+  margin:0
+}
+.recommend-meta {
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:14px
+}
+.recommend-meta span {
+  font:8px var(--mono);
+  color:#a5c1af;
+  border:1px solid var(--line);
+  padding:6px 7px;
+  border-radius:5px
+}
+.run-btn {
+  margin-top:auto;
+  padding:11px 12px;
+  border:0;
+  border-radius:7px;
+  background:var(--lime);
+  color:#08140c;
+  font-weight:800;
+  font-size:10px;
+  text-align:center;
+  transition:.2s
+}
+.run-btn:hover {
+  box-shadow:0 6px 20px #c6ff7025;
+  transform:translateY(-1px)
+}
+.run-btn:disabled {
+  opacity:.65;
+  cursor:default
+}
+.lab-foot {
+  display:flex;
+  align-items:start;
+  gap:8px;
+  color:#6e8978;
+  font:9px var(--mono);
+  line-height:1.7;
+  margin-top:14px
+}
+.lab-foot span {
+  color:var(--red)
+}
+.impact-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:13px;
+  margin-top:35px
+}
+.impact {
+  padding:23px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:linear-gradient(145deg,#0c1a13,#07100c);
+  transition:transform .25s,border-color .25s
+}
+.impact:hover {
+  transform:translateY(-4px);
+  border-color:#65f0b744
+}
+.impact-top {
+  display:flex;
+  justify-content:space-between;
+  align-items:center
+}
+.impact-no {
+  font:10px var(--mono);
+  color:var(--mint)
+}
+.impact-symbol {
+  font-size:19px;
+  color:var(--lime)
+}
+.impact h3 {
+  font-size:14px;
+  margin:23px 0 9px
+}
+.impact p {
+  font-size:11px;
+  line-height:1.8;
+  color:#8ca797;
+  margin:0
+}
+.roadmap {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-top:16px
+}
+.phase {
+  padding:20px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:#ffffff02
+}
+.phase-label {
+  font:9px var(--mono);
+  color:var(--mint);
+  letter-spacing:.1em;
+  text-transform:uppercase
+}
+.phase h3 {
+  font-size:13px;
+  margin:12px 0 8px
+}
+.phase p {
+  font-size:10px;
+  color:#8ca797;
+  line-height:1.8;
+  margin:0
+}
+.final {
+  padding:35px 0 90px
+}
+.finalbox {
+  border:1px solid #c6ff7032;
+  border-radius:18px;
+  position:relative;
+  overflow:hidden;
+  padding:56px 28px;
+  text-align:center;
+  background:radial-gradient(ellipse at 50% 120%,#65f0b719,transparent 65%),linear-gradient(135deg,#0c1b12,#08100c)
+}
+.finalbox:before,.finalbox:after {
+  content:"";
+  position:absolute;
+  width:260px;
+  height:260px;
+  border:1px solid #c6ff7012;
+  border-radius:50%;
+  top:-190px;
+  left:calc(50% - 130px);
+  box-shadow:0 0 0 25px #c6ff7004,0 0 0 55px #c6ff7003
+}
+.finalbox:after {
+  width:380px;
+  height:380px;
+  top:-250px;
+  left:calc(50% - 190px)
+}
+.finalbox>* {
+  position:relative
+}
+.finalbox h2 {
+  font-size:clamp(33px,5vw,56px);
+  letter-spacing:-.07em;
+  margin:15px 0
+}
+.finalbox p {
+  font-size:13px;
+  color:#91ab9b;
+  line-height:1.8;
+  max-width:550px;
+  margin:0 auto 25px
+}
+.footer {
+  border-top:1px solid var(--line);
+  padding:23px 0;
+  color:#6f8979;
+  font:9px var(--mono)
+}
+.footer-in {
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  flex-wrap:wrap
+}
+.footer strong {
+  color:#c8e9d4;
+  font-family:var(--font);
+  font-size:11px
+}
+.reveal {
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity .7s ease,transform .7s ease
+}
+.reveal.seen {
+  opacity:1;
+  transform:none
+}
+.cursor-glow {
+  position:fixed;
+  top:0;
+  left:0;
+  width:220px;
+  height:220px;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(circle,#65f0b70a,transparent 70%);
+  pointer-events:none;
+  z-index:1
+}
+.toast {
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translate(-50%,20px);
+  opacity:0;
+  z-index:80;
+  background:var(--lime);
+  color:#09140c;
+  border-radius:9px;
+  padding:12px 16px;
+  font-size:11px;
+  font-weight:800;
+  box-shadow:0 10px 40px #0008;
+  transition:.3s;
+  pointer-events:none;
+  max-width:calc(100% - 30px);
+  text-align:center
+}
+.toast.show {
+  opacity:1;
+  transform:translate(-50%,0)
+}
+@media(max-width:900px) {
+  .hero-grid {
+    grid-template-columns:1fr;
+    gap:45px
+  }
+  .hero {
+    padding-top:65px
+  }
+  .visual {
+    max-width:670px;
+    margin:auto;
+    width:100%
+  }
+  .challenge-grid,.solution-grid {
+    grid-template-columns:1fr;
+    gap:30px
+  }
+  .workbench {
+    grid-template-columns:165px 1fr
+  }
+  .sidepanel {
+    padding:16px 10px
+  }
+  .mainpanel {
+    padding:16px
+  }
+  .navlinks {
+    gap:15px
+  }
+  .status-pill {
+    display:none
+  }
+}
+@media(max-width:650px) {
+  .shell {
+    width:calc(100% - 30px)
+  }
+  .topline {
+    font-size:8px;
+    letter-spacing:.08em
+  }
+  .nav {
+    height:64px
+  }
+  .navlinks {
+    display:none;
+    position:absolute;
+    top:64px;
+    left:0;
+    right:0;
+    padding:18px 22px;
+    background:#07100c;
+    flex-direction:column;
+    align-items:flex-start;
+    border-bottom:1px solid var(--line)
+  }
+  .navlinks.open {
+    display:flex
+  }
+  .menu {
+    display:block
+  }
+  .navright {
+    gap:8px
+  }
+  .hero {
+    padding:50px 0 52px;
+    min-height:0
+  }
+  .hero-grid {
+    gap:38px
+  }
+  h1 {
+    font-size:55px
+  }
+  .hero-copy {
+    font-size:13px
+  }
+  .dashboard {
+    padding:12px;
+    transform:none;
+    animation:none
+  }
+  .db-metric {
+    padding:9px 7px
+  }
+  .db-metric strong {
+    font-size:17px
+  }
+  .floating {
+    right:-4px;
+    top:9%;
+    padding:10px
+  }
+  .float-bottom {
+    left:-5px;
+    bottom:7%;
+    padding:9px
+  }
+  .ticker-in {
+    justify-content:flex-start
+  }
+  .ticker-label {
+    width:100%
+  }
+  section {
+    padding:70px 0
+  }
+  .heading {
+    font-size:38px
+  }
+  .challenge-grid {
+    margin-top:30px
+  }
+  .workbench {
+    grid-template-columns:1fr
+  }
+  .sidepanel {
+    display:none
+  }
+  .mainpanel {
+    padding:12px
+  }
+  .stats {
+    grid-template-columns:1fr
+  }
+  .stat {
+    display:grid;
+    grid-template-columns:1fr auto;
+    align-items:center
+  }
+  .stat strong {
+    grid-column:2;
+    grid-row:1/3;
+    margin:0;
+    font-size:23px
+  }
+  .stat small {
+    grid-column:1
+  }
+  .lab-lower {
+    grid-template-columns:1fr
+  }
+  .energy-chart {
+    height:120px
+  }
+  .impact-grid,.roadmap {
+    grid-template-columns:1fr
+  }
+  .lab-head {
+    align-items:start
+  }
+  .lab-badge {
+    white-space:nowrap
+  }
+  .finalbox {
+    padding:42px 20px
+  }
+  .footer-in {
+    flex-direction:column
+  }
+  .pipeline {
+    padding:14px
+  }
+  .pipe-state {
+    display:none
+  }
+  .intro {
+    font-size:13px
+  }
+}
+@media(prefers-reduced-motion:reduce) {
+  *,*:before,*:after {
+    scroll-behavior:auto!important;
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important
+  }
+}
+</style>
+<style>
+/* AI STUDIO */ .ai-studio {
+  position:relative;
+  overflow:hidden;
+  background:radial-gradient(ellipse at 85% 5%,#65f0b710,transparent 36%),linear-gradient(180deg,#07100c,#050b09)
+}
+.ai-studio:before {
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image:linear-gradient(#b9ffda08 1px,transparent 1px),linear-gradient(90deg,#b9ffda08 1px,transparent 1px);
+  background-size:44px 44px;
+  mask-image:linear-gradient(to bottom,black,transparent 90%);
+  pointer-events:none
+}
+.ai-wrap {
+  position:relative;
+  z-index:1
+}
+.ai-grid {
+  display:grid;
+  grid-template-columns:.92fr 1.08fr;
+  gap:18px;
+  margin-top:38px;
+  align-items:stretch
+}
+.ai-card {
+  border:1px solid var(--line);
+  background:linear-gradient(145deg,#0b1b13,#07100c);
+  border-radius:18px;
+  padding:24px;
+  min-width:0
+}
+.ai-card-head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding-bottom:17px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:20px
+}
+.ai-card-head h3 {
+  font-size:16px;
+  margin:0;
+  letter-spacing:-.03em
+}
+.ai-card-head p {
+  font-size:10px;
+  color:var(--muted);
+  margin:6px 0 0
+}
+.ai-pill {
+  font:9px var(--mono);
+  color:var(--lime);
+  border:1px solid #c6ff7033;
+  background:#c6ff7009;
+  border-radius:5px;
+  padding:7px 9px;
+  white-space:nowrap
+}
+.ai-field {
+  margin:15px 0
+}
+.ai-field label {
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  font-size:11px;
+  color:#b4cbbb;
+  margin-bottom:9px
+}
+.ai-field label strong {
+  font:11px var(--mono);
+  color:var(--lime)
+}
+.ai-field input[type=range] {
+  width:100%;
+  accent-color:var(--mint);
+  cursor:pointer
+}
+.ai-field input[type=number],.ai-field select {
+  width:100%;
+  padding:12px 13px;
+  background:#06100b;
+  border:1px solid #c3ffe124;
+  border-radius:9px;
+  color:var(--white);
+  font:12px var(--mono);
+  outline:none
+}
+.ai-field input:focus,.ai-field select:focus {
+  border-color:var(--mint)
+}
+.ai-pair {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px
+}
+.ai-primary {
+  width:100%;
+  border:0;
+  border-radius:9px;
+  background:var(--lime);
+  color:#0a160d;
+  font:700 11px var(--font);
+  padding:14px 16px;
+  cursor:pointer;
+  transition:transform .2s,filter .2s
+}
+.ai-primary:hover {
+  transform:translateY(-2px);
+  filter:brightness(1.05)
+}
+.ai-results {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:9px;
+  margin-bottom:15px
+}
+.ai-result {
+  padding:13px 10px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#ffffff03;
+  min-width:0
+}
+.ai-result span {
+  display:block;
+  color:var(--muted);
+  font-size:9px;
+  line-height:1.4
+}
+.ai-result strong {
+  display:block;
+  font-size:21px;
+  letter-spacing:-.06em;
+  margin:9px 0 4px;
+  overflow-wrap:anywhere
+}
+.ai-result small {
+  font:8px var(--mono);
+  color:var(--mint)
+}
+.ai-explain {
+  padding:16px;
+  border:1px solid #65f0b72b;
+  border-radius:12px;
+  background:#65f0b708
+}
+.ai-explain h4 {
+  font-size:12px;
+  margin:0 0 8px
+}
+.ai-explain p {
+  font-size:11px;
+  line-height:1.8;
+  color:#a0b9a8;
+  margin:0
+}
+.ai-recs {
+  display:grid;
+  gap:8px;
+  margin-top:13px
+}
+.ai-rec {
+  display:grid;
+  grid-template-columns:28px 1fr;
+  gap:10px;
+  padding:11px 12px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:#ffffff02
+}
+.ai-rec b {
+  display:grid;
+  place-items:center;
+  width:25px;
+  height:25px;
+  border-radius:7px;
+  background:#65f0b712;
+  color:var(--mint);
+  font-size:11px
+}
+.ai-rec strong {
+  font-size:10px;
+  display:block;
+  margin:1px 0 4px
+}
+.ai-rec span {
+  font-size:10px;
+  line-height:1.6;
+  color:var(--muted)
+}
+.ai-note {
+  font:9px/1.7 var(--mono);
+  color:#829c8b;
+  margin-top:14px
+}
+.copilot {
+  display:flex;
+  flex-direction:column;
+  min-height:100%
+}
+.chat-window {
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  min-height:280px;
+  max-height:360px;
+  overflow:auto;
+  padding:2px 3px 15px
+}
+.chat-msg {
+  max-width:94%;
+  padding:12px 13px;
+  border-radius:11px;
+  font-size:11px;
+  line-height:1.8;
+  white-space:pre-wrap
+}
+.chat-msg.ai {
+  align-self:flex-start;
+  background:#ffffff06;
+  border:1px solid var(--line);
+  color:#c4d8ca
+}
+.chat-msg.user {
+  align-self:flex-end;
+  background:#c6ff7012;
+  border:1px solid #c6ff7030;
+  color:#e8ffd6
+}
+.chat-label {
+  display:block;
+  font:8px var(--mono);
+  letter-spacing:.1em;
+  color:var(--mint);
+  margin-bottom:5px
+}
+.chat-form {
+  display:flex;
+  gap:8px;
+  margin-top:auto;
+  padding-top:14px;
+  border-top:1px solid var(--line)
+}
+.chat-form input {
+  min-width:0;
+  flex:1;
+  background:#06100b;
+  border:1px solid #c3ffe124;
+  border-radius:9px;
+  padding:13px;
+  color:var(--white);
+  font:11px var(--font);
+  outline:none
+}
+.chat-form input:focus {
+  border-color:var(--mint)
+}
+.chat-form button {
+  border:0;
+  border-radius:9px;
+  padding:0 16px;
+  background:var(--lime);
+  color:#0a160d;
+  font-weight:800;
+  cursor:pointer
+}
+.prompt-chips {
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  margin:0 0 14px
+}
+.prompt-chip {
+  border:1px solid var(--line);
+  background:#ffffff04;
+  color:#a9c1b1;
+  border-radius:20px;
+  padding:8px 10px;
+  font:9px var(--font);
+  cursor:pointer
+}
+.prompt-chip:hover {
+  border-color:#65f0b766;
+  color:var(--mint)
+}
+.ai-status {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font:9px var(--mono);
+  color:var(--muted);
+  margin-top:12px
+}
+.ai-status i {
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--mint);
+  box-shadow:0 0 12px #65f0b766
+}
+.ai-disclaimer {
+  padding:13px 15px;
+  margin-top:17px;
+  border:1px dashed #c6ff7030;
+  border-radius:10px;
+  color:#9db3a3;
+  font-size:10px;
+  line-height:1.7
+}
+@media(max-width:850px) {
+  .ai-grid {
+    grid-template-columns:1fr
+  }
+  .ai-card {
+    padding:19px
+  }
+  .chat-window {
+    min-height:220px
+  }
+}
+@media(max-width:480px) {
+  .ai-pair {
+    grid-template-columns:1fr
+  }
+  .ai-results {
+    gap:6px
+  }
+  .ai-result {
+    padding:10px 7px
+  }
+  .ai-result strong {
+    font-size:17px
+  }
+  .ai-card-head {
+    align-items:flex-start
+  }
+  .ai-pill {
+    font-size:8px
+  }
+}
+/* One-page showcase: all modules remain visible, navigation scrolls to each module */ main>section {
+  display:block;
+  position:relative;
+  scroll-margin-top:88px
+}
+main>section:not(.hero) {
+  border-top:1px solid rgba(189,255,218,.08)
+}
+main>section:not(.hero):nth-of-type(even) {
+  background:radial-gradient(ellipse at 90% 0%,rgba(101,240,183,.045),transparent 42%),linear-gradient(180deg,rgba(255,255,255,.008),transparent 70%)
+}
+main>section:not(.hero):after {
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  top:0;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(198,255,112,.16),transparent);
+  pointer-events:none
+}
+@keyframes pageIn {
+  from {
+    opacity:.3;
+    transform:translateY(8px)
+  }
+  to {
+    opacity:1;
+    transform:none
+  }
+}
+.ticker {
+  display:block
+}
+/* Elevated visual system */ :root {
+  --line:rgba(189,255,218,.15)
+}
+header {
+  box-shadow:0 10px 35px rgba(0,0,0,.12)
+}
+.navlinks a {
+  position:relative;
+  padding:9px 0;
+  white-space:nowrap
+}
+.navlinks a:before {
+  content:"";
+  position:absolute;
+  left:0;
+  right:100%;
+  bottom:1px;
+  height:1px;
+  background:var(--mint);
+  transition:right .25s ease
+}
+.navlinks a:hover:before,.navlinks a.active:before {
+  right:0
+}
+.navlinks a.active:after {
+  display:none
+}
+.brand-icon {
+  position:relative;
+  isolation:isolate
+}
+.brand-icon:after {
+  content:"";
+  position:absolute;
+  inset:-5px;
+  border:1px solid rgba(198,255,112,.22);
+  border-radius:14px;
+  animation:brandPulse 3s ease-in-out infinite;
+  z-index:-1
+}
+@keyframes brandPulse {
+  50% {
+    transform:scale(1.08);
+    opacity:.45
+  }
+}
+.hero {
+  min-height:660px
+}
+.hero:after {
+  content:"";
+  position:absolute;
+  z-index:-1;
+  left:-20%;
+  bottom:-12%;
+  width:55%;
+  height:50%;
+  background:radial-gradient(ellipse,rgba(101,240,183,.07),transparent 70%);
+  pointer-events:none
+}
+.heading {
+  max-width:850px
+}
+.section-head {
+  position:relative
+}
+.section-head:before {
+  content:"";
+  display:block;
+  width:42px;
+  height:3px;
+  border-radius:4px;
+  background:var(--lime);
+  margin-bottom:17px;
+  box-shadow:0 0 18px #c6ff7044
+}
+.section-head.center:before {
+  margin-left:auto;
+  margin-right:auto
+}
+.challenge-big,.challenge-calcs,.pipeline,.ai-card,.impact,.phase,.finalbox,.chart-card,.calc-card {
+  transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease
+}
+.challenge-big:hover,.challenge-calcs:hover,.pipeline:hover,.ai-card:hover,.impact:hover,.phase:hover,.calc-card:hover {
+  border-color:rgba(198,255,112,.28);
+  box-shadow:0 18px 60px rgba(0,0,0,.18)
+}
+.calc-card:hover,.impact:hover,.phase:hover {
+  transform:translateY(-4px)
+}
+.btn {
+  box-shadow:0 8px 24px rgba(198,255,112,.07)
+}
+.btn:focus-visible,button:focus-visible,a:focus-visible,input:focus-visible {
+  outline:2px solid var(--lime);
+  outline-offset:3px
+}
+.ticker-item {
+  padding:7px 0
+}
+.ticker-item i {
+  display:grid;
+  place-items:center;
+  width:28px;
+  height:28px;
+  border:1px solid rgba(198,255,112,.18);
+  border-radius:9px;
+  background:rgba(198,255,112,.04)
+}
+.footer {
+  border-top:1px solid rgba(189,255,218,.1)
+}
+@media(prefers-reduced-motion:reduce) {
+  *,*:before,*:after {
+    scroll-behavior:auto!important;
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important
+  }
+}
+.navlinks a.active {
+  color:var(--lime);
+  position:relative
+}
+.navlinks a.active:after {
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:-12px;
+  height:2px;
+  background:var(--lime);
+  border-radius:2px
+}
+.challenge-calcs {
+  margin-top:30px;
+  padding:23px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:linear-gradient(145deg,#0b1a12,#07100c)
+}
+.calc-head {
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  align-items:center;
+  margin-bottom:18px
+}
+.calc-head h3 {
+  font-size:20px;
+  letter-spacing:-.04em;
+  margin:8px 0 0
+}
+.calc-cards {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-bottom:17px
+}
+.calc-card {
+  padding:17px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#ffffff03
+}
+.calc-card>span {
+  font:9px var(--mono);
+  color:var(--mint);
+  letter-spacing:.1em
+}
+.calc-card h4 {
+  font-size:13px;
+  margin:12px 0 7px
+}
+.calc-card p {
+  font-size:10px;
+  line-height:1.7;
+  color:var(--muted);
+  min-height:36px
+}
+.calc-card strong {
+  font:9px var(--mono);
+  color:var(--lime)
+}
+.challenge-select {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px
+}
+.challenge-choice {
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:5px;
+  text-align:left;
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#ffffff03;
+  color:var(--white)
+}
+.challenge-choice span {
+  font:9px var(--mono);
+  color:var(--mint)
+}
+.challenge-choice b {
+  font-size:10px
+}
+.challenge-choice small {
+  font-size:9px;
+  color:var(--muted)
+}
+.challenge-choice.active {
+  border-color:#c6ff7080;
+  background:#c6ff7010;
+  box-shadow:inset 0 0 0 1px #c6ff7015
+}
+@media(max-width:650px) {
+  .calc-cards {
+    grid-template-columns:1fr
+  }
+  .calc-card p {
+    min-height:0
+  }
+  .challenge-select {
+    grid-template-columns:1fr
+  }
+  .challenge-choice {
+    display:grid;
+    grid-template-columns:30px 1fr;
+    align-items:center
+  }
+  .challenge-choice small {
+    grid-column:2
+  }
+  .navlinks a.active:after {
+    bottom:-5px
+  }
+}
+</style></head>
+<body>
+<div class="topline"><span class="live-dot"></span> HACKATHON PROTOTYPE <span style="opacity:.45">/</span> AI FOR RESOURCE EFFICIENCY & SUSTAINABILITY</div>
+<header><div class="shell nav"><a class="brand" href="#home"><span class="brand-icon">✳</span><span>ECO-STAY AI<small>HOSPITALITY INTELLIGENCE</small></span></a><nav class="navlinks" id="navlinks"><a href="#home">⌂ Home</a><a href="#challenge">◈ Challenges</a><a href="#solution">⌘ System</a><a href="#lab">⌁ Energy Lab</a><a href="#ai-studio">✳ AI Copilot</a><a href="#impact">↗ Impact</a></nav><div class="navright"><span class="status-pill">● PROTOTYPE / V1.0</span><button class="menu" id="menu" aria-label="Toggle menu">☰</button></div></div></header>
+<main>
+<section class="hero" id="home"><div class="shell hero-grid"><div class="reveal seen"><div class="overline">Resource intelligence for hotels</div><h1>Less waste.<br><span class="stroke">More</span> <span class="lime">intention.</span></h1><p class="hero-copy">An AI-assisted energy intelligence concept that helps hospitality teams anticipate demand, spot unusual usage and make resource decisions without losing sight of guest comfort.</p><div class="hero-actions"><a class="btn" href="#lab">Enter interactive lab <span class="arr">↗</span></a><a class="btn ghost" href="#solution">Explore the system <span class="arr">↓</span></a></div><div class="hero-foot"><div class="avatars"><i>AI</i><i>↗</i><i>✳</i></div><span><strong>Predict.</strong> Optimize. Measure.</span><span style="color:#476553">/</span><span class="mono">R1 · ENERGY</span></div></div>
+<div class="visual reveal seen"><div class="orb"></div><div class="dashboard"><div class="db-head"><div><div class="db-name">Property intelligence <span style="color:#698776;font-weight:400">/ Overview</span></div><div class="db-sub">DEMO PROPERTY · SYSTEM MONITOR</div></div><div class="db-live">● SIMULATED</div></div><div class="db-section"><span>Operational snapshot</span><span>↗ SAMPLE DATA</span></div><div class="db-metrics"><div class="db-metric"><label>Energy today</label><strong>1,840 <span class="unit">kWh</span></strong><small>↓ 12% baseline</small></div><div class="db-metric"><label>Occupancy</label><strong>86<span class="unit">%</span></strong><small style="color:var(--blue)">HIGH DEMAND</small></div><div class="db-metric"><label>AI signals</label><strong>03 <span class="unit">flags</span></strong><small>REVIEW NEEDED</small></div></div><div class="chart-card"><div class="chart-title"><b>Energy demand outlook</b><small>NEXT 24 HOURS</small></div><svg class="svgchart" viewBox="0 0 450 115" preserveAspectRatio="none"><defs><linearGradient id="area" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#65f0b7" stop-opacity=".25"/><stop offset="100%" stop-color="#65f0b7" stop-opacity="0"/></linearGradient></defs><path d="M0 91H450M0 60H450M0 29H450" stroke="#c4ffdc12" stroke-dasharray="3 5" fill="none"/><path d="M0 87 C35 80 45 58 75 66 S115 77 145 52 S183 65 215 41 S255 51 286 33 S326 48 354 23 S405 31 450 8 L450 110 L0 110Z" fill="url(#area)"/><path class="linepath" d="M0 87 C35 80 45 58 75 66 S115 77 145 52 S183 65 215 41 S255 51 286 33 S326 48 354 23 S405 31 450 8" stroke="#8bf4c3" stroke-width="2.4" fill="none" stroke-linecap="round"/><circle cx="354" cy="23" r="4" fill="#c6ff70"/><circle cx="354" cy="23" r="8" stroke="#c6ff7055" fill="none"/></svg><div class="legend"><span><b></b>Forecast demand</span><span><b></b>Illustrative trend</span></div></div><div class="chart-card"><div class="chart-title"><b>Resource rhythm</b><small>LAST 7 DAYS</small></div><div id="heroBars" style="height:40px;display:flex;align-items:end;gap:7px;margin-top:12px"><i style="height:40%"></i><i style="height:55%"></i><i style="height:48%"></i><i style="height:72%"></i><i style="height:59%"></i><i style="height:88%"></i><i style="height:65%"></i></div><style>
+#heroBars i {
+  display:block;
+  flex:1;
+  background:linear-gradient(180deg,#65f0b7,#65f0b71a);
+  border-radius:3px 3px 0 0;
+  animation:barIn .9s both
+}
+#heroBars i:nth-child(2) {
+  animation-delay:.1s
+}
+#heroBars i:nth-child(3) {
+  animation-delay:.2s
+}
+#heroBars i:nth-child(4) {
+  animation-delay:.3s
+}
+#heroBars i:nth-child(5) {
+  animation-delay:.4s
+}
+#heroBars i:nth-child(6) {
+  animation-delay:.5s
+}
+#heroBars i:nth-child(7) {
+  animation-delay:.6s
+}
+@keyframes barIn {
+  from {
+    transform:scaleY(.1);
+    transform-origin:bottom;
+    opacity:.3
+  }
+  to {
+    transform:scaleY(1);
+    opacity:1
+  }
+}
+</style></div></div><div class="floating"><small>EFFICIENCY OPPORTUNITY</small><strong>↓ 12% <span style="font-size:10px">energy</span></strong></div><div class="float-bottom"><span class="spark">✳</span><span><strong>Recommendation ready</strong><small>Shared-space schedule review</small></span></div></div>
+</div></section>
+<div class="ticker"><div class="shell ticker-in"><span class="ticker-label">The operating loop</span><span class="ticker-item"><i>↗</i> Forecast demand</span><span class="ticker-item"><i>⌁</i> Detect anomalies</span><span class="ticker-item"><i>✳</i> Recommend actions</span><span class="ticker-item"><i>↘</i> Measure impact</span></div></div>
+<section id="challenge"><div class="shell"><div class="section-head reveal"><div class="tag">01 / The challenge</div><h2 class="heading">The biggest waste<br><span class="mutedline">is the waste we don't see.</span></h2><p class="intro">We focus on three practical sources of avoidable energy waste in hotels. Select each challenge in the AI Studio to calculate an illustrative waste estimate from baseline and observed consumption.</p></div><div class="challenge-grid"><div class="challenge-big reveal"><div class="eyebrow-sm">THE PROBLEM / R1</div><h3>High energy consumption isn't just a meter reading.</h3><p>It is a planning problem. The opportunity is to connect demand signals to operational choices before unnecessary consumption becomes routine.</p><div style="position:absolute;bottom:20px;right:23px;font:10px var(--mono);color:#4c725a">ENERGY × OCCUPANCY × TIMING</div></div><div class="issue-list reveal"><div class="issue"><span class="issue-num">01</span><div><h4>HVAC & air conditioning</h4><p>Cooling or heating running longer than needed in shared or low-use areas.</p></div></div><div class="issue"><span class="issue-num">02</span><div><h4>Lighting in low-use spaces</h4><p>Lights staying on in meeting rooms, corridors or facilities when demand is low.</p></div></div><div class="issue"><span class="issue-num">03</span><div><h4>Laundry & hot water</h4><p>Equipment cycles and hot-water demand that may be poorly aligned with occupancy.</p></div></div></div></div><div class="challenge-calcs reveal"><div class="calc-head"><div><div class="eyebrow-sm">WASTAGE CALCULATOR / DEMO</div><h3>See the excess energy, not just the bill.</h3></div><span class="lab-badge">SAMPLE INPUTS</span></div><div class="calc-cards"><article class="calc-card"><span>01 / HVAC</span><h4>Air conditioning</h4><p>Example: excess cooling runtime or poor scheduling.</p><strong>Try in AI Studio ↗</strong></article><article class="calc-card"><span>02 / LIGHTING</span><h4>Lighting waste</h4><p>Example: lights left on in low-occupancy areas.</p><strong>Try in AI Studio ↗</strong></article><article class="calc-card"><span>03 / LAUNDRY + HOT WATER</span><h4>Operational loads</h4><p>Example: cycles and heating not aligned with demand.</p><strong>Try in AI Studio ↗</strong></article></div><a class="btn" href="#ai-studio">Calculate challenge wastage <span class="arr">↗</span></a></div></div></section>
+<section class="solution" id="solution"><div class="shell solution-grid"><div class="reveal"><div class="tag">02 / The system</div><h2 class="heading">A clearer signal.<br><span class="mutedline">A smarter next move.</span></h2><p class="intro">ECO-STAY AI turns hotel signals into an understandable operational workflow. It is designed as a decision-support tool: the system highlights opportunities, and people remain in control.</p><div class="features"><div class="feature"><span class="feature-icon">⌁</span><div><h4>Forecast the demand</h4><p>Estimate energy needs from occupancy, bookings and historical usage.</p></div></div><div class="feature"><span class="feature-icon">◎</span><div><h4>Surface anomalies</h4><p>Flag unusual consumption patterns for staff to review and investigate.</p></div></div><div class="feature"><span class="feature-icon">↗</span><div><h4>Recommend practical actions</h4><p>Suggest schedule reviews and operating adjustments with clear context.</p></div></div><div class="feature"><span class="feature-icon">▥</span><div><h4>Track what changes</h4><p>Compare usage with a baseline and monitor comfort alongside efficiency.</p></div></div></div></div><div class="pipeline reveal"><div class="pipeline-head"><b>Decision pipeline</b><span>MODEL FLOW / 04 STAGES</span></div><div class="pipe-step"><span class="pipe-icon">▤</span><div><strong>01 · Property data</strong><small>Occupancy · bookings · energy readings</small></div><span class="pipe-state">INPUT</span></div><div class="pipe-arrow">↓</div><div class="pipe-step"><span class="pipe-icon">⌘</span><div><strong>02 · AI analysis</strong><small>Forecasting · pattern detection · anomaly flags</small></div><span class="pipe-state">ANALYZE</span></div><div class="pipe-arrow">↓</div><div class="pipe-step"><span class="pipe-icon">✳</span><div><strong>03 · Recommendation</strong><small>Explainable actions for staff review</small></div><span class="pipe-state">ADVISE</span></div><div class="pipe-arrow">↓</div><div class="pipe-step"><span class="pipe-icon">↗</span><div><strong>04 · Measure & learn</strong><small>Compare actual use with the baseline</small></div><span class="pipe-state">IMPROVE</span></div><div class="pipeline-foot"><span>HUMAN-IN-THE-LOOP</span><span>NO BLIND AUTOMATION ↗</span></div></div></div></section>
+<section class="lab" id="lab"><div class="shell"><div class="lab-head reveal"><div class="section-head"><div class="tag">03 / Interactive lab</div><h2 class="heading">Your hotel.<br><span class="mutedline">Your scenario.</span></h2><p class="intro">Explore three occupancy scenarios and run an optimization simulation. Estimates update instantly using illustrative sample values.</p></div><span class="lab-badge">● SIMULATED DATA / NOT LIVE</span></div>
+<div class="workbench reveal"><aside class="sidepanel"><div class="side-title">PROPERTY WORKSPACE</div><div class="property"><span class="property-icon">⌂</span><span>EcoStay Demo Hotel</span></div><div style="margin-top:25px" class="side-title">INTELLIGENCE</div><div class="side-link active">Overview</div><div class="side-link">Energy forecast</div><div class="side-link">Anomaly signals</div><div class="side-link">Action log</div><div class="side-bottom">MODEL STATUS<br><span style="color:var(--mint)">●</span> Demo engine active<br>DATA SOURCE<br>Illustrative sample set</div></aside>
+<div class="mainpanel"><div class="worktop"><div><h3>Operational overview</h3><p>Energy intelligence / Scenario workspace</p></div><span class="time-chip">◷ TODAY · DEMO</span></div><div class="scenario-row"><button class="scenario active" data-mode="normal">Normal day</button><button class="scenario" data-mode="busy">High occupancy</button><button class="scenario" data-mode="quiet">Quiet day</button></div>
+<div class="stats"><div class="stat"><div class="stat-label">Forecast occupancy <i>↗</i></div><strong id="occupancy">72%</strong><small id="occCaption">BALANCED DEMAND</small></div><div class="stat"><div class="stat-label">Projected energy <i>⌁</i></div><strong id="energy">1,620 <span style="font-size:10px;color:#88a494;letter-spacing:0">kWh</span></strong><small id="energyCaption">BASELINE ESTIMATE</small></div><div class="stat"><div class="stat-label">Opportunity <i>✳</i></div><strong id="opportunity">8%</strong><small id="oppCaption">POTENTIAL REDUCTION</small></div></div>
+<div class="lab-lower"><div class="panel"><div class="panel-top"><b>Hourly energy profile</b><span id="chartStatus">FORECAST / RELATIVE</span></div><svg class="energy-chart" id="energyChart" viewBox="0 0 420 145" preserveAspectRatio="none"><path class="gridline" d="M0 20H420M0 55H420M0 90H420M0 125H420"/><path id="chartArea" d="M0 103 L60 84 L120 61 L180 34 L240 46 L300 71 L360 94 L420 110 L420 135 L0 135Z" fill="#65f0b71a"/><path id="chartLine" d="M0 103 L60 84 L120 61 L180 34 L240 46 L300 71 L360 94 L420 110" fill="none" stroke="#65f0b7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle id="chartDot" cx="180" cy="34" r="4" fill="#c6ff70"/></svg><div class="chart-labels"><span>06:00</span><span>09:00</span><span>12:00</span><span>15:00</span><span>18:00</span><span>22:00</span></div></div>
+<div class="recommend-card"><div class="recommend-tag">✳ AI-ASSISTED RECOMMENDATION</div><h4 id="recTitle">Align shared-space schedules</h4><p id="recText">Review HVAC and lighting schedules in lower-use areas while maintaining comfortable guest-room settings.</p><div class="recommend-meta"><span id="priority">PRIORITY · MEDIUM</span><span>STAFF REVIEW</span></div><button class="run-btn" id="run">Run optimization simulation ↗</button></div></div><div class="lab-foot"><span>ⓘ</span><div>All values are illustrative prototype outputs. The simulated reduction is not a verified saving; real predictions require validated hotel data and on-site testing.</div></div></div></div></div></section>
+
+<section class="ai-studio" id="ai-studio"><div class="shell ai-wrap">
+<div class="section-head reveal"><div class="tag">04 / AI decision studio</div><h2 class="heading">Don't just show data.<br><span class="mutedline">Turn it into a decision.</span></h2><p class="intro">Explore a transparent, interactive intelligence demo. Adjust hotel conditions to estimate demand, inspect potential anomalies, and ask the ECO copilot for operational guidance.</p></div>
+<div class="ai-grid">
+<div class="ai-card reveal"><div class="ai-card-head"><div><h3>Energy prediction engine</h3><p>Scenario inputs → estimated demand</p></div><span class="ai-pill">DEMO MODEL / V1</span></div>
+<div class="ai-field"><label for="aiOcc">Expected occupancy <strong id="aiOccVal">78%</strong></label><input id="aiOcc" type="range" min="10" max="100" value="78" /></div>
+<div class="ai-field"><label>Choose a main challenge <strong id="challengeLabel">HVAC & AC</strong></label><div class="challenge-select" id="challengeSelect"><button type="button" class="challenge-choice active" data-challenge="hvac"><span>01</span><b>HVAC & AC</b><small>Cooling / heating</small></button><button type="button" class="challenge-choice" data-challenge="lighting"><span>02</span><b>Lighting</b><small>Low-use spaces</small></button><button type="button" class="challenge-choice" data-challenge="laundry"><span>03</span><b>Laundry + hot water</b><small>Operational loads</small></button></div></div>
+<div class="ai-pair"><div class="ai-field"><label for="aiBase">Normal use for this challenge (kWh/day)</label><input id="aiBase" type="number" min="100" max="100000" value="1800" /></div><div class="ai-field"><label for="aiActual">Observed use for this challenge (kWh/day)</label><input id="aiActual" type="number" min="0" max="100000" value="2050" /></div></div>
+<button class="ai-primary" id="aiAnalyze">Analyze hotel scenario ↗</button>
+<div style="height:18px"></div><div class="ai-results"><div class="ai-result"><span>Estimated demand</span><strong id="aiPred">2,020</strong><small>kWh / day</small></div><div class="ai-result"><span>Estimated wasted energy</span><strong id="aiWaste">250 kWh</strong><small id="aiVar">+13.9% vs baseline</small></div><div class="ai-result"><span>Waste ratio</span><strong id="aiOpp">13.9%</strong><small id="aiRisk">REVIEW NEEDED</small></div></div>
+<div class="ai-explain"><h4 id="aiInsightTitle">What the engine sees</h4><p id="aiInsight">Select a challenge and enter its baseline and observed energy use. The demo calculates the positive difference as estimated excess energy.</p></div>
+<div class="ai-recs" id="aiRecs"><div class="ai-rec"><b>↗</b><div><strong>Review shared-space schedules</strong><span>Match HVAC and lighting schedules to actual use while preserving guest-room comfort.</span></div></div><div class="ai-rec"><b>◎</b><div><strong>Check unusual consumption</strong><span>Investigate equipment and meter readings before assuming the cause.</span></div></div></div>
+<div class="ai-note">Transparent scenario logic, not a trained ML model. Estimates are illustrative and should not be presented as verified forecasts or savings.</div>
+</div>
+<div class="ai-card copilot reveal"><div class="ai-card-head"><div><h3>Ask ECO · AI Copilot</h3><p>Operational reasoning assistant</p></div><span class="ai-pill">INTERACTIVE</span></div>
+<div class="prompt-chips"><button class="prompt-chip" data-prompt="How can this hotel reduce energy waste?">Reduce energy waste</button><button class="prompt-chip" data-prompt="Explain the current anomaly risk">Explain anomaly risk</button><button class="prompt-chip" data-prompt="How do we measure real savings?">Measure real savings</button></div>
+<div class="chat-window" id="aiChat" aria-live="polite"><div class="chat-msg ai"><span class="chat-label">ECO COPILOT · READY</span>Hi! I’m ECO Copilot. Select HVAC, lighting, or laundry/hot water, then analyze the scenario. I can explain the estimated wastage, suggest practical checks, and help you plan how to verify real savings.</div></div>
+<form class="chat-form" id="aiChatForm"><input id="aiQuestion" placeholder="Ask about this hotel scenario…" aria-label="Ask ECO Copilot" autocomplete="off"/><button type="submit" aria-label="Send question">↑</button></form>
+<div class="ai-status"><i></i> Local decision-support demo · no external API connected</div>
+</div></div>
+<div class="ai-disclaimer">Responsible AI note: the current website runs transparent browser-side scenario rules and a guided copilot, not a connected large language model or trained forecasting model. A production version would need validated historical data, model evaluation, secure integrations, and human approval before operational changes.</div>
+</div></section>
+
+<section id="impact"><div class="shell"><div class="section-head center reveal"><div class="tag">05 / Intended impact</div><h2 class="heading">Better decisions.<br><span class="mutedline">Measurable outcomes.</span></h2><p class="intro">The aim is not to produce an impressive AI score. It is to make an operational decision clearer, easier to review and possible to measure.</p></div><div class="impact-grid"><article class="impact reveal"><div class="impact-top"><span class="impact-no">OUTCOME / 01</span><span class="impact-symbol">↘</span></div><h3>Reduce avoidable energy use</h3><p>Spot schedule and operating patterns that may contribute to unnecessary consumption.</p></article><article class="impact reveal"><div class="impact-top"><span class="impact-no">OUTCOME / 02</span><span class="impact-symbol">⌘</span></div><h3>Give teams useful context</h3><p>Bring key signals into one dashboard and turn patterns into practical recommendations.</p></article><article class="impact reveal"><div class="impact-top"><span class="impact-no">OUTCOME / 03</span><span class="impact-symbol">✳</span></div><h3>Keep comfort in the loop</h3><p>Use staff-reviewed actions and measure efficiency without treating guest comfort as optional.</p></article></div><div class="roadmap"><article class="phase reveal"><div class="phase-label">PHASE 01 / NOW</div><h3>Demonstrate the workflow</h3><p>Interactive dashboard, sample scenarios and explainable recommendations.</p></article><article class="phase reveal"><div class="phase-label">PHASE 02 / PILOT</div><h3>Validate on real data</h3><p>Connect historical occupancy and energy readings; compare forecast against actual use.</p></article><article class="phase reveal"><div class="phase-label">PHASE 03 / SCALE</div><h3>Connect more signals</h3><p>Explore meter integrations, anomaly alerts, water insights and multi-property reporting.</p></article></div></div></section>
+<section class="final"><div class="shell"><div class="finalbox reveal"><div class="tag">ECO-STAY AI / R1 · HIGH ENERGY CONSUMPTION</div><h2>Make every unit count.</h2><p>Smarter resource decisions for a more thoughtful hospitality experience—one informed action at a time.</p><a class="btn" href="#lab">Try the interactive lab <span class="arr">↑</span></a></div></div></section>
+</main>
+<footer class="footer"><div class="shell footer-in"><span><strong>✳ ECO-STAY AI</strong> · AI-assisted resource efficiency for smart tourism</span><span>HACKATHON PROTOTYPE · SAMPLE DATA ONLY</span></div></footer><div class="cursor-glow" id="glow"></div><div class="toast" id="toast" role="status" aria-live="polite">Simulation complete.</div>
+<script>
+  
+const $=id=>document.getElementById(id);
+const data={
+normal:{occ:72,energy:1620,save:8,occLabel:"BALANCED DEMAND",energyLabel:"BASELINE ESTIMATE",title:"Align shared-space schedules",text:"Review HVAC and lighting schedules in lower-use areas while maintaining comfortable guest-room settings.",priority:"PRIORITY · MEDIUM",points:[103,84,61,34,46,71,94,110]},
+busy:{occ:94,energy:2180,save:11,occLabel:"PEAK DEMAND EXPECTED",energyLabel:"HIGH-DEMAND ESTIMATE",title:"Prepare for a high-occupancy day",text:"Review pre-cooling windows, confirm HVAC zones and coordinate laundry loads around the expected demand peak.",priority:"PRIORITY · HIGH",points:[115,98,66,30,40,54,77,101]},
+quiet:{occ:38,energy:980,save:14,occLabel:"LOWER DEMAND EXPECTED",energyLabel:"LOW-ACTIVITY ESTIMATE",title:"Match operations to lower occupancy",text:"Review low-use zones and consider consolidating laundry loads. Keep occupied guest areas comfortable and staffed.",priority:"PRIORITY · MEDIUM",points:[119,109,91,72,79,97,113,123]}
+};
+let mode="normal",applied=false,toastTimer;
+function notify(s){$("toast").textContent=s;$("toast").classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>$("toast").classList.remove("show"),2900)}
+function drawChart(points){const coords=points.map((y,i)=>`${i===0?"M":"L"}${i*60} ${y}`).join(" ");$("chartLine").setAttribute("d",coords);$("chartArea").setAttribute("d",coords+" L420 135 L0 135Z");const i=points.indexOf(Math.min(...points));$("chartDot").setAttribute("cx",i*60);$("chartDot").setAttribute("cy",points[i]);}
+function choose(k){mode=k;applied=false;document.querySelectorAll("[data-mode]").forEach(b=>b.classList.toggle("active",b.dataset.mode===k));const d=data[k];$("occupancy").textContent=d.occ+"%";$("energy").innerHTML=d.energy.toLocaleString()+" <span style='font-size:10px;color:#88a494;letter-spacing:0'>kWh</span>";$("opportunity").textContent=d.save+"%";$("occCaption").textContent=d.occLabel;$("energyCaption").textContent=d.energyLabel;$("recTitle").textContent=d.title;$("recText").textContent=d.text;$("priority").textContent=d.priority;$("chartStatus").textContent="FORECAST / RELATIVE";$("run").disabled=false;$("run").textContent="Run optimization simulation ↗";drawChart(d.points);}
+document.querySelectorAll("[data-mode]").forEach(b=>b.addEventListener("click",()=>choose(b.dataset.mode)));
+$("run").addEventListener("click",()=>{if(applied)return;applied=true;const d=data[mode],next=Math.round(d.energy*(1-d.save/100));$("energy").innerHTML=next.toLocaleString()+" <span style='font-size:10px;color:#88a494;letter-spacing:0'>kWh</span>";$("energyCaption").textContent="SIMULATED AFTER-ACTION ESTIMATE";$("recTitle").textContent="Scenario optimization applied";$("recText").textContent=`This illustrative simulation changes the projected energy estimate from ${d.energy.toLocaleString()} to ${next.toLocaleString()} kWh after the suggested adjustment. Actual savings must be validated against measured consumption.`;$("chartStatus").textContent="SIMULATED / ADJUSTED";$("run").disabled=true;$("run").textContent="Simulation applied ✓";drawChart(d.points.map(y=>Math.min(128,Math.round(135-(135-y)*(1-d.save/100)))));notify("Simulation complete — illustrative estimate only.");});
+$("menu").addEventListener("click",()=>$("navlinks").classList.toggle("open"));
+function showPage(){const allowed=['home','challenge','solution','lab','ai-studio','impact'];let page=(location.hash||'#home').slice(1);if(!allowed.includes(page))page='home';document.body.dataset.page=page;document.querySelectorAll('.navlinks a').forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+page));$("navlinks").classList.remove('open');const target=$(page);if(target){target.scrollIntoView({behavior:'smooth',block:'start'});}}
+window.addEventListener('hashchange',showPage);document.querySelectorAll('.navlinks a,.brand,.hero-actions a,.finalbox a,.challenge-calcs a').forEach(a=>a.addEventListener('click',()=>{const href=a.getAttribute('href');if(href&&href.startsWith('#')){if(location.hash===href){const target=$(href.slice(1));if(target)target.scrollIntoView({behavior:'smooth',block:'start'});document.querySelectorAll('.navlinks a').forEach(n=>n.classList.toggle('active',n.getAttribute('href')===href));$("navlinks").classList.remove('open');}else setTimeout(()=>{document.querySelectorAll('.navlinks a').forEach(n=>n.classList.toggle('active',n.getAttribute('href')===href));$("navlinks").classList.remove('open');},0);}}));
+const navTargets=['home','challenge','solution','lab','ai-studio','impact'].map(id=>$(id)).filter(Boolean);if('IntersectionObserver' in window){const navObserver=new IntersectionObserver(entries=>{const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];if(visible){const id=visible.target.id;document.querySelectorAll('.navlinks a').forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+id));}},{rootMargin:'-18% 0px -65% 0px',threshold:[0,.15,.35,.6]});navTargets.forEach(el=>navObserver.observe(el));}showPage();
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add("seen");obs.unobserve(e.target)}}),{threshold:.12});document.querySelectorAll(".reveal:not(.seen)").forEach(el=>obs.observe(el));
+const glow=$("glow");window.addEventListener("pointermove",e=>{glow.style.left=e.clientX+"px";glow.style.top=e.clientY+"px"},{passive:true});
+
+// Transparent challenge calculator: browser-side scenario rules, not a trained ML model.
+const challengeConfig={
+ hvac:{label:'HVAC & AC',factor:1.13,rec:'Review HVAC schedules and setpoints',detail:'Compare cooling/heating runtime with occupancy, check filters and review shared-space schedules. Keep ventilation and occupied-room comfort protected.'},
+ lighting:{label:'Lighting',factor:1.08,rec:'Review lighting in low-use spaces',detail:'Check meeting rooms, back-of-house areas and daylight schedules. Use occupancy controls where appropriate; keep safety and emergency lighting active.'},
+ laundry:{label:'Laundry + hot water',factor:1.11,rec:'Align laundry and hot-water demand',detail:'Review laundry batch timing, equipment idle time and hot-water schedules against occupancy. Maintain hygiene requirements and safe water temperatures.'}
+};
+let selectedChallenge='hvac';
+const aiState={occupancy:78,challenge:'hvac',baseline:1800,actual:2050,predicted:2020,variance:13.9,waste:250,risk:'REVIEW',opportunity:'13.9%'};
+function aiNum(id,min,max,fallback){const v=Number($(id).value);return Number.isFinite(v)?Math.max(min,Math.min(max,v)):fallback;}
+function selectChallenge(key){selectedChallenge=key;document.querySelectorAll('[data-challenge]').forEach(b=>b.classList.toggle('active',b.dataset.challenge===key));$('challengeLabel').textContent=challengeConfig[key].label;const c=challengeConfig[key];$('aiInsightTitle').textContent=c.label+' · wastage analysis';$('aiInsight').textContent=c.detail+' Enter baseline and observed use for this category, then analyze to calculate estimated excess energy.';}
+function analyzeAI(){
+ const occ=aiNum('aiOcc',10,100,78),base=aiNum('aiBase',0,100000,1800),actual=aiNum('aiActual',0,100000,2050),cfg=challengeConfig[selectedChallenge];
+ // Transparent demo estimate: occupancy-adjusted scenario demand; not trained ML.
+ const predicted=Math.round(base*(.48+.52*(occ/100))*cfg.factor);
+ const waste=Math.max(0,actual-base),variance=base>0?(waste/base)*100:0;
+ const risk=waste/base*100>15?'HIGH':waste>0?'REVIEW':'WITHIN BASELINE';
+ const opp=base>0?(waste/base*100).toFixed(1)+'%':'0.0%';
+ Object.assign(aiState,{occupancy:occ,challenge:selectedChallenge,baseline:base,actual,predicted,variance,waste,risk,opportunity:opp});
+ $('aiOccVal').textContent=occ+'%';$('aiPred').textContent=predicted.toLocaleString();$('aiWaste').textContent=waste.toLocaleString()+' kWh';$('aiVar').textContent=(waste>0?'+'+variance.toFixed(1):'0.0')+'% vs baseline';$('aiRisk').textContent=risk;$('aiOpp').textContent=opp;
+ $('aiRisk').style.color=risk==='HIGH'?'#ffb78d':risk==='WITHIN BASELINE'?'var(--mint)':'var(--lime)';
+ $('aiInsightTitle').textContent=waste>0?'Estimated excess energy detected':'Observed use is within baseline';
+ $('aiInsight').textContent=`For ${cfg.label} at ${occ}% occupancy, the demo estimates demand of ${predicted.toLocaleString()} kWh/day. Observed use is ${actual.toLocaleString()} kWh/day against a baseline of ${base.toLocaleString()} kWh/day, giving ${waste.toLocaleString()} kWh/day of estimated excess (${opp}). This is a simple comparison—not proof of the cause or verified savings.`;
+ const recs=[];
+ if(waste>0)recs.push(['!','Investigate estimated excess',`The observed value is ${waste.toLocaleString()} kWh/day above the entered baseline. Check meter accuracy, operating hours and occupancy before attributing the difference to waste.`]);
+ recs.push(['↗',cfg.rec,cfg.detail]);
+ recs.push(['✓','Verify on comparable days','Measure actual kWh after the change and normalize for occupancy, weather and operating hours. Do not report the demo estimate as a real saving.']);
+ $('aiRecs').innerHTML=recs.map(r=>`<div class="ai-rec"><b>${r[0]}</b><div><strong>${r[1]}</strong><span>${r[2]}</span></div></div>`).join('');
+ notify('Challenge analyzed — illustrative calculation only.');
+}
+document.querySelectorAll('[data-challenge]').forEach(b=>b.addEventListener('click',()=>selectChallenge(b.dataset.challenge)));
+$('aiOcc').addEventListener('input',()=>{$('aiOccVal').textContent=$('aiOcc').value+'%';});$('aiAnalyze').addEventListener('click',analyzeAI);
+function addChat(text,who){const el=document.createElement('div');el.className='chat-msg '+who;const label=document.createElement('span');label.className='chat-label';label.textContent=who==='user'?'YOU':'ECO COPILOT · SCENARIO LOGIC';el.appendChild(label);el.appendChild(document.createTextNode(text));$('aiChat').appendChild(el);$('aiChat').scrollTop=$('aiChat').scrollHeight;}
+function copilotAnswer(q){const x=q.toLowerCase(),s=aiState,c=challengeConfig[s.challenge];const base=`Current demo: ${c.label}, ${s.occupancy}% occupancy, estimated demand ${s.predicted.toLocaleString()} kWh/day, and ${s.waste.toLocaleString()} kWh/day estimated excess against the entered baseline. `;
+ if(/save|reduce|waste|efficient|optim/.test(x))return base+`Recommended first check: ${c.rec.toLowerCase()}. ${c.detail} Treat the calculation as a screening estimate and verify with actual meter readings.`;
+ if(/anomal|spike|risk|unusual|variance|high/.test(x))return base+`The current status is ${s.risk}. A baseline difference is a signal to investigate, not proof of a fault. Check meter quality, occupancy, operating hours and equipment activity before deciding the cause.`;
+ if(/carbon|co2|emission/.test(x))return 'Estimate carbon impact only after measuring a real energy change: multiply verified kWh change by an applicable regional grid-emissions factor. Cite the factor and reporting period; this prototype has no verified carbon data.';
+ if(/cost|money|bill|price/.test(x))return `Estimated cost impact = verified energy change (kWh) × the hotel's actual tariff. For this ${c.label} scenario, first validate the excess energy against comparable days; the current result is illustrative, not a bill saving.`;
+ if(/measure|prove|real|verify|impact|saving/.test(x))return 'Use a baseline from comparable operating periods and compare measured kWh after the action, accounting for occupancy, weather and operating hours. Track kWh per occupied room and guest-comfort indicators. The current excess calculation is not verified savings.';
+ if(/ai|model|machine learning|trained|how work/.test(x))return 'This demo uses a transparent browser-side formula and guided responses, not a trained ML model or connected LLM. A production version would need historical hotel data, a validated forecasting model, error metrics such as MAE, and pilot testing.';
+ if(/hvac|air condition|cool/.test(x))return 'For HVAC, compare runtime and setpoints with occupancy, inspect filters, and review shared-space schedules. Do not disable required ventilation or compromise guest comfort.';
+ if(/light/.test(x))return 'For lighting, review meeting rooms and low-use areas, make use of daylight and occupancy controls where suitable, and keep emergency and safety lighting active.';
+ if(/laundry|water/.test(x))return 'For laundry and hot water, review batch timing, idle equipment and schedules against occupancy while maintaining hygiene requirements and safe water temperatures.';
+ if(/hello|hi|hey/.test(x))return 'Hi! I’m ECO Copilot. I can explain your selected challenge, interpret the estimated wastage, suggest operational checks, or explain how to verify real savings.';
+ return base+`A practical next step is to follow this recommendation: ${c.rec}. Check the relevant readings, let staff review the action, and verify results using comparable real-world data.`;}
+$('aiChatForm').addEventListener('submit',e=>{e.preventDefault();const q=$('aiQuestion').value.trim();if(!q)return;addChat(q,'user');$('aiQuestion').value='';addChat(copilotAnswer(q),'ai');});
+document.querySelectorAll('[data-prompt]').forEach(b=>b.addEventListener('click',()=>{$('aiQuestion').value=b.dataset.prompt;$('aiChatForm').requestSubmit();}));
+analyzeAI();
+
+</script></body></html>
